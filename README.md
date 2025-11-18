@@ -32,11 +32,14 @@ You need a LaTeX distribution installed on your system. This project uses **Basi
 Python 3.x with the following packages:
 - `numpy`
 - `matplotlib`
+- `pandas`
+- `seaborn`
+- `scikit-learn`
 - `jupyter` or `jupyterlab` (for running notebooks)
 
 Install dependencies:
 ```bash
-pip install numpy matplotlib jupyter
+pip install numpy matplotlib pandas seaborn scikit-learn jupyter
 ```
 
 ## Project Structure

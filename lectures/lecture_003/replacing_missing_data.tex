@@ -1,0 +1,56 @@
+\subsection{Mechanisms for Replacing Missing Data}
+
+\textbf{Missing values} are values for attributes that were not entered or were lost during recording. Inadequate handling of missing values can introduce \textbf{bias} (systematic error that causes estimates to consistently deviate from true values) and lead to misleading conclusions, limiting the generalization of research results. Common reasons for missing values include manual data entry procedures, equipment errors, and incorrect measurements.
+
+Understanding why data is missing is important for choosing the appropriate treatment method. If values are missing completely at random, the sample may still be representative. However, if values are missing systematically, the analysis may be biased. For example, in a study of IQ and income, participants with above-average IQ might skip the salary question, potentially missing a positive association.
+
+\subsubsection{Data Loss Types}
+
+\begin{itemize}
+    \item \textbf{MAR (Missing at Random)}: The probability of missing an observation depends on observed variables but not on missing ones. Given particular values for observed features, the distribution of remaining features is the same between observed and missing cases.
+    
+    \textit{Example}: In a survey, income data is missing more often for older participants (age is observed), but the missingness doesn't depend on the actual income value itself.
+    
+    \item \textbf{MCAR (Missing Completely at Random)}: A special case of MAR where the distribution of a sample with a missing value doesn't depend on observed or unobserved data. Missing values form another possible sample from the probability distribution. When data is MCAR, analysis has no bias; however, data is rarely MCAR.
+    
+    \textit{Example}: A data entry error causes random records to be lost, with no relationship to any variable values (e.g., a computer crash that randomly deletes some entries).
+    
+    \item \textbf{NMAR (Not Missing at Random)}: Missing values depend on both observed values and the missing value itself. This is challenging because obtaining an unbiased estimate requires modeling the missingness mechanism itself, which must then be incorporated into a more complex model for estimating missing values.
+    
+    \textit{Example}: In an income survey, high-income individuals are more likely to skip the income question (the missingness depends on the actual income value, which is unobserved).
+\end{itemize}
+
+\subsubsection{Handling Mechanisms}
+
+Missing value handling in machine learning can be addressed through two mechanisms:
+
+\begin{itemize}
+    \item \textbf{Deletion mechanism}: Removes entire records (rows) that contain missing values. Simple but can lead to information loss, especially if many records have missing values. Most appropriate when data is MCAR and missing values are few.
+    
+    \item \textbf{Imputation by mean, median, and mode}: Replaces missing values with statistical measures:
+    \begin{itemize}
+        \item \textbf{Mean}: Average value (for continuous numerical data)
+        \item \textbf{Median}: Middle value (for continuous numerical data, robust to outliers)
+        \item \textbf{Mode}: Most frequent value (for categorical data)
+    \end{itemize}
+    Preserves dataset size but may introduce bias if missingness is not random.
+\end{itemize}
+
+These mechanisms are important because many algorithms cannot handle missing data, making it essential to identify and handle missing values in any dataset.
+
+\subsubsection{Other Imputation Methods}
+
+Beyond simple statistical imputation, there are advanced methods that analyze relationships between attributes:
+
+\begin{itemize}
+    \item \textbf{K-Nearest Neighbour (KNN)}: Uses similar records to impute missing values based on distance metrics.
+    
+    \item \textbf{Expectation-Maximization (EM)}: Iteratively estimates parameters of a probability distribution from incomplete data. Works best with easily maximizable distributions like Gaussian mixture models. Generates a single imputation but tends to underestimate estimation errors.
+    
+    \item \textbf{Multiple Imputation (MI)}: Generates multiple imputed values from observed data, creating several complete datasets. Less biased than EM but computationally expensive. Uses Markov Chain Monte Carlo (MCMC) methods to introduce randomness, typically from a standard normal distribution.
+    
+    \item \textbf{Other methods}: SVM-based, clustering-based, logistic regression, and maximum likelihood procedures.
+\end{itemize}
+
+The choice of imputation method is independent of the learning algorithm and should be selected based on the specific situation and data characteristics.
+

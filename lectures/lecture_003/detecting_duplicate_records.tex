@@ -1,0 +1,30 @@
+\subsection{Detecting Duplicate Records}
+
+When recording values in databases from non-standardized sources, data often presents missing values or \textbf{duplicate records}. Information may be recorded two or more times, which significantly affects data quality. \textbf{Duplicate data} (Record Linkage) refers to records whose values match in all study variables selected by the data analyst. This occurs due to various causes: incorrect data entry, repeated entry of the same value, or data corruption.
+
+Duplicate data not only refers to the same entity, but also to attributes or instances that, despite having different contents, should be the same. Therefore, duplicate record detection aims to explore one or more sources for data that should be unique but are not due to different representations.
+
+Databases containing names, addresses, or other data can easily be affected by duplicate entries as a result of manipulation by multiple people or data entry at different times and under different circumstances. An algorithm is necessary to gather all possible duplicate records and merge or remove some of them.
+
+An example of duplicate records is shown in Table~\ref{tab:duplicate_records}. The dataset contains four variables (Id, first name, last name, age, and height) for seven subjects. Records in rows 6 and 7 are identical, indicating a duplicate entry for Id 7.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Id} & \textbf{First Name} & \textbf{Last Name} & \textbf{Age} & \textbf{Height (m)} \\
+\midrule
+1 & Angela & Castro & 27 & 1.67 \\
+2 & Adrian & Guzman & 31 & 1.80 \\
+3 & Theodoro & Rivadeneira & 36 & 1.61 \\
+4 & Angela & Castillo & 27 & 1.77 \\
+5 & Adrian & Casas & 53 & 1.88 \\
+6 & Beatriz & Perez & 48 & 1.69 \\
+7 & Olivia & Apraez & 36 & 1.62 \\
+7 & Olivia & Apraez & 36 & 1.62 \\
+\bottomrule
+\end{tabular}
+\caption{Database with duplicate records (Id 7 appears twice)}
+\label{tab:duplicate_records}
+\end{table}
+

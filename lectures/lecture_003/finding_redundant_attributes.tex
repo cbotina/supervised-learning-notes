@@ -1,0 +1,123 @@
+\subsection{Finding Redundant Attributes}
+
+Attributes in a dataset must not be derived from other attributes; such attributes are called \textbf{redundant data}. Techniques for identifying redundant attributes include correlation, covariance, and the $\chi^2$ test.
+
+\subsubsection{Correlation and Covariance}
+
+Pearson's correlation coefficient measures linear association between two quantitative variables. For attributes $X_1$ and $X_2$: a high correlation coefficient indicates strong correlation and potential redundancy (one can be removed); a coefficient of 0 indicates independence (no redundancy); a negative coefficient indicates inverse relationship.
+
+An example of redundancy:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Name} & \textbf{is\_male} & \textbf{is\_female} \\
+\midrule
+angie & 0 & 1 \\
+juan & 1 & 0 \\
+diego & 1 & 0 \\
+pedro & 1 & 0 \\
+ana & 0 & 1 \\
+jose & 1 & 0 \\
+carolina & 0 & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Example dataset showing redundant attributes}
+\label{tab:redundant_attributes}
+\end{table}
+
+In Table~\ref{tab:redundant_attributes}, \texttt{is\_male} and \texttt{is\_female} are perfectly correlated (100\%): if a person is not a man, they are a woman. One attribute determines the other, making one redundant and removable without information loss.
+
+\subsubsection{Chi-square Test for Nominal Data}
+
+When the feature type and target variable are categorical (i.e., a classification problem), the Chi-square test, also known as Pearson's chi-square, can be used. This test is performed on nominal data. For two attributes $X_1$ and $X_2$ in a dataset, a contingency table is created to represent data tuples. The chi-square statistic is calculated as:
+
+\begin{equation}
+\chi^2 = \sum \left[ \frac{(Y_o - Y_e)^2}{Y_e} \right]
+\label{eq:chi_square}
+\end{equation}
+
+where $Y_o$ is the actual count of observed values and $Y_e$ is the expected values of joint events in the contingency table. The $\chi^2$ test checks the hypothesis that $X_1$ and $X_2$ are independent. If this hypothesis can be rejected, we can say that $X_1$ and $X_2$ are statistically correlated and one of them can be discarded.
+
+\paragraph{Step-by-Step Example}
+
+Consider testing whether \textbf{Gender} and \textbf{Interest} (Sports vs Reading) are independent attributes. We have collected data from 100 people:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc|c}
+\toprule
+ & \textbf{Sports} & \textbf{Reading} & \textbf{Total} \\
+\midrule
+\textbf{Male} & 30 & 20 & 50 \\
+\textbf{Female} & 10 & 40 & 50 \\
+\midrule
+\textbf{Total} & 40 & 60 & 100 \\
+\bottomrule
+\end{tabular}
+\caption{Observed frequencies (contingency table)}
+\label{tab:chi_observed}
+\end{table}
+
+\textbf{Step 1: Define the hypothesis}
+\begin{itemize}
+    \item $H_0$: Gender and Interest are independent (not associated)
+    \item $H_1$: Gender and Interest are not independent (are associated)
+\end{itemize}
+
+\textbf{Step 2: Set significance level}
+\begin{itemize}
+    \item $\alpha = 0.05$ (common choice: 0.01 to 0.10)
+\end{itemize}
+
+\textbf{Step 3: Create contingency table}
+\begin{itemize}
+    \item Table~\ref{tab:chi_observed} shows the observed frequencies ($Y_o$)
+\end{itemize}
+
+\textbf{Step 4: Calculate expected frequencies}
+For each cell: $E = \frac{\text{row total} \times \text{column total}}{\text{grand total}}$
+
+\begin{align*}
+E_{\text{Male, Sports}} &= \frac{50 \times 40}{100} = 20 \\
+E_{\text{Male, Reading}} &= \frac{50 \times 60}{100} = 30 \\
+E_{\text{Female, Sports}} &= \frac{50 \times 40}{100} = 20 \\
+E_{\text{Female, Reading}} &= \frac{50 \times 60}{100} = 30
+\end{align*}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc|c}
+\toprule
+ & \textbf{Sports} & \textbf{Reading} & \textbf{Total} \\
+\midrule
+\textbf{Male} & 20 & 30 & 50 \\
+\textbf{Female} & 20 & 30 & 50 \\
+\midrule
+\textbf{Total} & 40 & 60 & 100 \\
+\bottomrule
+\end{tabular}
+\caption{Expected frequencies}
+\label{tab:chi_expected}
+\end{table}
+
+\textbf{Step 5: Calculate Chi-square}
+Using equation~\ref{eq:chi_square}:
+
+\begin{align*}
+\chi^2 &= \frac{(30-20)^2}{20} + \frac{(20-30)^2}{30} + \frac{(10-20)^2}{20} + \frac{(40-30)^2}{30} \\
+&= \frac{100}{20} + \frac{100}{30} + \frac{100}{20} + \frac{100}{30} \\
+&= 5 + 3.33 + 5 + 3.33 \\
+&= 16.67
+\end{align*}
+
+\textbf{Step 6: Calculate degrees of freedom}
+$$df = (\text{rows} - 1) \times (\text{columns} - 1) = (2-1) \times (2-1) = 1$$
+
+\textbf{Step 7: Find p-value}
+With $\chi^2 = 16.67$ and $df = 1$, the p-value $< 0.001$ (very small).
+
+\textbf{Step 8: Make decision}
+Since p-value $< \alpha$ (0.05), we \textbf{reject $H_0$}. Gender and Interest are statistically correlated, indicating one attribute may be redundant.
+

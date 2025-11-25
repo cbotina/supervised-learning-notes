@@ -1,0 +1,52 @@
+\subsection{Z-score Normalization}
+
+\textbf{Z-score normalization} (standardization) transforms a dataset to a normal distribution with mean 0 and standard deviation 1. Values for an attribute $x_i$ are normalized based on the mean ($\mu$) and standard deviation ($\sigma$) of the dataset.
+
+In some cases, min-max normalization is not feasible, especially when the minimum or maximum of an attribute $x^{(i)}$ is unknown. Additionally, the presence of outliers can bias min-max normalization by clustering values and limiting the digital precision available to represent them.
+
+When applying this transformation, attribute values have a mean of 0 and standard deviation of 1. The result indicates how far a specific data point is from the mean in terms of standard deviations. This standardization facilitates comparison of different datasets, even when they are in different units or have very disparate values.
+
+The Z-score formula is:
+
+\begin{equation}
+z = \frac{x - \mu}{\sigma}
+\label{eq:z_score}
+\end{equation}
+
+where $\mu$ is the mean and $\sigma$ is the standard deviation of the attribute.
+
+\paragraph{Example: Z-score Calculation}
+
+Consider an attribute \texttt{test\_scores} with values: [65, 70, 75, 80, 85]. 
+
+\begin{itemize}
+    \item Mean: $\mu = \frac{65 + 70 + 75 + 80 + 85}{5} = 75$
+    \item Standard deviation: $\sigma = \sqrt{\frac{(65-75)^2 + (70-75)^2 + (75-75)^2 + (80-75)^2 + (85-75)^2}{5}} = \sqrt{50} \approx 7.07$
+    \item For $x = 80$: $z = \frac{80 - 75}{7.07} \approx 0.71$ (0.71 standard deviations above the mean)
+    \item For $x = 65$: $z = \frac{65 - 75}{7.07} \approx -1.41$ (1.41 standard deviations below the mean)
+\end{itemize}
+
+The normalized values become: [-1.41, -0.71, 0.0, 0.71, 1.41].
+
+\paragraph{Example: Comparing Different Datasets}
+
+A professor wants to compare a student's grade in an undergraduate course (mean = 75, $\sigma$ = 10) with another student's grade in a graduate course (mean = 85, $\sigma$ = 5):
+\begin{itemize}
+    \item Student A: score = 80 in undergraduate course
+    \item Student B: score = 87 in graduate course
+\end{itemize}
+
+Using Z-scores:
+\begin{itemize}
+    \item Student A: $z = \frac{80 - 75}{10} = 0.5$ (0.5 standard deviations above the mean)
+    \item Student B: $z = \frac{87 - 85}{5} = 0.4$ (0.4 standard deviations above the mean)
+\end{itemize}
+
+Despite Student B having a higher raw score (87 vs 80), Student A performed better relative to their class (0.5 vs 0.4 standard deviations above the mean).
+
+\paragraph{Example: Handling Outliers}
+
+Consider data with an outlier: [10, 12, 14, 16, 18, 100]. 
+
+With min-max normalization to [0,1], the outlier (100) compresses all other values into a narrow range [0.0, 0.09], losing precision. With Z-score normalization, the outlier is still visible but doesn't compress the other values as dramatically, preserving more information about the distribution.
+

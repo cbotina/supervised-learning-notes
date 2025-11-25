@@ -1,0 +1,93 @@
+\subsection{From Nominal to Binary}
+
+Machine learning algorithms such as support vector machines and artificial neural networks cannot properly handle nominal attributes; therefore, the presence of these features in a dataset can be problematic. To solve this issue, nominal variables could be transformed to numerical ones, where each nominal value is encoded as an integer starting from 0 or 1. However, this option is not recommended because it assumes an order or hierarchy that does not exist in the attribute values. This transformation of nominal values to a sequence of integers establishes unequal relationships between pairs of nominal values, which is incorrect.
+
+An alternative transformation is to map each nominal attribute to a set of newly generated attributes; this technique is known as \textbf{one-hot encoding} or \textbf{hot encoding}.
+
+In the transformation from nominal to binary, the nominal variable is replaced by a new set of binary attributes: if the nominal attribute has $N$ different values, it is replaced by a set of $N$ binary attributes, each representing one of the possible values. For each instance, only one of the $N$ newly created attributes will have a value of 1, while the rest will have the value 0. The variable with value 1 corresponds to the original value of the old nominal attribute.
+
+\paragraph{Example: Problem with Integer Encoding}
+
+Consider a nominal attribute \texttt{color} with values: [red, blue, green]. 
+
+\textbf{Integer encoding} (not recommended):
+\begin{table}[H]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Color} & \textbf{Encoded} \\
+\midrule
+red & 0 \\
+blue & 1 \\
+green & 2 \\
+\bottomrule
+\end{tabular}
+\caption{Integer encoding implies order (red $<$ blue $<$ green)}
+\label{tab:integer_encoding}
+\end{table}
+
+This incorrectly implies that green (2) is ``greater'' than red (0) and that the distance between red and blue (1) is different from blue to green (1), which is meaningless for nominal data.
+
+\paragraph{Example: One-Hot Encoding}
+
+Using \textbf{one-hot encoding} for the same \texttt{color} attribute:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{Color} & \textbf{color\_red} & \textbf{color\_blue} & \textbf{color\_green} \\
+\midrule
+red & 1 & 0 & 0 \\
+blue & 0 & 1 & 0 \\
+green & 0 & 0 & 1 \\
+red & 1 & 0 & 0 \\
+green & 0 & 0 & 1 \\
+\bottomrule
+\end{tabular}
+\caption{One-hot encoding: each color becomes a binary attribute}
+\label{tab:one_hot}
+\end{table}
+
+Each color value is now represented by three binary attributes. For each instance, exactly one attribute is 1 and the others are 0. This preserves the nominal nature without implying any order or hierarchy.
+
+\paragraph{Example: Multiple Nominal Attributes}
+
+Consider a dataset with two nominal attributes: \texttt{gender} (Male, Female) and \texttt{city} (New York, London, Tokyo).
+
+\textbf{Original data:}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Gender} & \textbf{City} \\
+\midrule
+Male & New York \\
+Female & London \\
+Male & Tokyo \\
+Female & New York \\
+\bottomrule
+\end{tabular}
+\caption{Original dataset with nominal attributes}
+\label{tab:original_nominal}
+\end{table}
+
+\textbf{After one-hot encoding:}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcc|ccc}
+\toprule
+\textbf{gender\_Male} & \textbf{gender\_Female} & \textbf{city\_NY} & \textbf{city\_London} & \textbf{city\_Tokyo} \\
+\midrule
+1 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 \\
+0 & 1 & 1 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{One-hot encoded dataset (5 binary attributes)}
+\label{tab:one_hot_multiple}
+\end{table}
+
+The 2 nominal attributes with 2 and 3 values respectively become 5 binary attributes. Each instance has exactly 2 ones (one for gender, one for city) and 3 zeros.
+

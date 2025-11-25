@@ -1,0 +1,60 @@
+\subsection{Min-Max Normalization}
+
+Most datasets contain attributes that vary greatly in magnitude, units, and range. Some machine learning algorithms use Euclidean distance between attributes, ignoring units. Attributes with high magnitudes will weigh much more in distance calculations than features with low magnitudes, making it necessary to scale features to the same magnitude level.
+
+\textbf{Feature scaling} is a critical preprocessing step that can make the difference between a weak and superior model. Scaling is necessary for correct predictions due to:
+\begin{itemize}
+    \item Regression coefficients are directly influenced by attribute scale
+    \item Features with larger scale dominate over features with smaller scale
+    \item First-order iterative algorithms (e.g., gradient descent) run more easily with scaled values
+    \item Some algorithms reduce execution time when features are scaled
+    \item Distance-based algorithms are very sensitive to attribute scales
+\end{itemize}
+
+Feature scaling is essential for algorithms that calculate distances between data points, such as linear and logistic regression, artificial neural networks, support vector machines, K-Means clustering, K-Nearest Neighbors, principal component analysis, and gradient descent.
+
+However, scaling is a monotonic transformation and does not affect rule-based algorithms, which do not require normalization. Tree-based algorithms (CART, Random Forests, Gradient Boosting Trees) use rules (series of inequalities) and do not need feature normalization. Some algorithms like Linear Discriminant Analysis (LDA) and Naive Bayes are designed to handle different feature scales by weighting each feature, so scaling may have little effect.
+
+\textbf{Min-Max scaling} transforms all numerical values $x^{(i)}$ of a numerical attribute to a specific range defined by $[x_{\min}, x_{\max}]$, where $x_{\min}$ corresponds to the minimum and $x_{\max}$ to the maximum of the dataset. To obtain a new transformed value $x_{\text{norm}}^{(i)}$, the following expression is used for each value $x^{(i)}$:
+
+\begin{equation}
+x_{\text{norm}}^{(i)} = \frac{x^{(i)} - x_{\min}}{x_{\max} - x_{\min}}
+\label{eq:min_max}
+\end{equation}
+
+\textbf{Normalization} typically refers to a specific case of min-max scaling where the final interval is $[0,1]$ (i.e., $x_{\min} = 0$ and $x_{\max} = 1$). The interval $[-1,1]$ is also common. Normalizing all data to the same range prevents attributes with large differences ($x_{\max} - x_{\min}$) from dominating others in distance calculations and misleading the learning process. This normalization is known to accelerate learning in Artificial Neural Networks by helping weights converge faster.
+
+\paragraph{Example: Normalization to [0,1]}
+
+Consider an attribute \texttt{age} with values: [25, 30, 35, 40, 45]. To normalize to [0,1]:
+\begin{itemize}
+    \item $x_{\min} = 25$, $x_{\max} = 45$
+    \item For $x = 30$: $x_{\text{norm}} = \frac{30 - 25}{45 - 25} = \frac{5}{20} = 0.25$
+    \item For $x = 40$: $x_{\text{norm}} = \frac{40 - 25}{45 - 25} = \frac{15}{20} = 0.75$
+\end{itemize}
+
+The normalized values become: [0.0, 0.25, 0.5, 0.75, 1.0].
+
+\paragraph{Example: Problem without Normalization}
+
+Consider a dataset with two features:
+\begin{itemize}
+    \item \texttt{income}: [20000, 50000, 80000, 100000] (range: 80000)
+    \item \texttt{age}: [25, 30, 35, 40] (range: 15)
+\end{itemize}
+
+In distance calculations, \texttt{income} differences (e.g., 30000) will dominate \texttt{age} differences (e.g., 5), even though both features may be equally important. After normalization to [0,1], both features contribute equally to distance calculations.
+
+\paragraph{Example: Normalization to [-1,1]}
+
+To normalize to $[-1,1]$, the formula becomes:
+$$x_{\text{norm}}^{(i)} = 2 \cdot \frac{x^{(i)} - x_{\min}}{x_{\max} - x_{\min}} - 1$$
+
+For the same age values [25, 30, 35, 40, 45]:
+\begin{itemize}
+    \item For $x = 30$: $x_{\text{norm}} = 2 \cdot 0.25 - 1 = -0.5$
+    \item For $x = 40$: $x_{\text{norm}} = 2 \cdot 0.75 - 1 = 0.5$
+\end{itemize}
+
+The normalized values become: [-1.0, -0.5, 0.0, 0.5, 1.0].
+
